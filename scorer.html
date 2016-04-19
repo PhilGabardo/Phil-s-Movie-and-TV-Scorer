@@ -1,0 +1,104 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://static.pureexample.com/js/flot/excanvas.min.js"></script>
+<script src="http://static.pureexample.com/js/flot/jquery.flot.min.js"></script>
+ 
+<!-- CSS -->
+<style type="text/css">
+#flotcontainer {
+    width: 600px;
+    height: 150px;
+    text-align: center;
+    margin: 0 auto;
+}
+</style>
+ 
+ 
+<!-- Javascript -->
+<script type="text/javascript">
+$(document).ready(function(){   
+    var data = [];
+ 
+    for (var i = 0; i < 10; i += 0.5){        
+        data.push([i, i]);
+    }
+ 
+    var options = {
+        series: {
+                   bars: { show: true }
+               }
+    };
+ 
+    $.plot($("#flotcontainer"), 
+                [
+                    {
+                    data:data
+                    }
+                ],
+                options);
+ 
+});
+</script>
+ 
+<!-- HTML -->
+<p>Enter a TV show or movie title below</p>
+
+<form>
+    <textarea id="demo" name="comments" cols="25" rows="5"></textarea>
+    <br />
+    <input type="button" onclick="myFunction()" value='Replace' />
+</form>
+
+<script type='text/javascript'>
+function myFunction() {
+    var test = document.getElementById('demo').value;
+    var url = "http://www.omdbapi.com/?t=" + test + "&y=&plot=short&r=json"; 
+    $.ajax({
+       type: "GET",
+        url: url,
+        dataType: "json",
+        success: processData,
+        error: function(){ alert("failed"); }
+    });
+
+}
+
+
+function processData(data){
+    var data = [[data.imdbRating, 0]];
+    
+    var options = {
+        series: {
+                   bars: {  show: true }
+               },
+         bars: {
+                align: "center",
+                barWidth: 0.5,
+                horizontal: true,
+                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 1}] },
+                lineWidth: 1
+            },
+         xaxis: {
+                axisLabel: "IMDB Rating",
+                max: 10
+         },
+         yaxis: {
+                ticks: 0
+         }
+  
+    };
+ 
+    $.plot($("#flotcontainer"), 
+                [
+                    {
+                    data:data
+                    }
+                ],
+                options);
+
+
+}
+
+</script>
+
+
+<div id="flotcontainer"></div>
