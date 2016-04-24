@@ -1,72 +1,141 @@
+<link href='//fonts.googleapis.com/css?family=Montserrat:400,700|Source+Code+Pro:500,700' rel='stylesheet' type='text/css'>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="http://static.pureexample.com/js/flot/excanvas.min.js"></script>
 <script src="http://static.pureexample.com/js/flot/jquery.flot.min.js"></script>
  
 <!-- CSS -->
 <style type="text/css">
-#flotcontainer {
+    body {
+      background: fixed no-repeat bottom right;
+      background-size: 10%;
+    }
+    input, textarea {
+      font-family: 'Montserrat', sans-serif;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+      font-size: 22px;
+    }
+    input[type="number"] {
+      width: 80px;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 10em;
+    }
+
+   .button {
+      font-family: 'Montserrat', sans-serif;
+      border-radius:3px;
+      border: 4px solid #ddd;
+      background-color: white;
+      color: black;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+    }
+
+    .button:hover {
+      background-color: #4CAF50; /* Green */
+      color: white;
+    } 
+
+    .center {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #222;
+
+      position: relative;
+      text-align: center;
+    }
+
+.center2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #222;
+      padding: 2em 0 0 0;
+      position: relative;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+
+.center3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #4CAF50;
+      padding: 2em 0 0 0;
+      position: relative;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+
+#IMDBcontainer {
     width: 600px;
-    height: 150px;
+    height: 50px;
     text-align: center;
     margin: 0 auto;
 }
+#Netflixcontainer {
+    width: 600px;
+    height: 50px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#Tomatoescontainer {
+    width: 600px;
+    height: 50px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#Philcontainer {
+    width: 600px;
+    height: 50px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#formWrapper{
+    width:550px;
+    padding: 0 0 0em 0;
+    margin-top: 100px;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+}
+.details
+{
+    text-align: center;
+    padding: 2em 0 2em 0;
+}
+
+.phil-scorer {
+    border: solid 10px #222;
+    padding: 20px;
+    cursor: default;
+}
+
+
+
 </style>
+
+
+
  
  
 <!-- Javascript -->
 <script type="text/javascript">
-$(document).ready(function(){   
-    var data = [];
- 
-    for (var i = 0; i < 10; i += 0.5){        
-        data.push([i, i]);
-    }
- 
-    var options = {
-        series: {
-                   bars: { show: true }
-               }
-    };
- 
-    $.plot($("#flotcontainer"), 
-                [
-                    {
-                    data:data
-                    }
-                ],
-                options);
- 
-});
-</script>
- 
-<!-- HTML -->
-<p>Enter a TV show or movie title below</p>
 
-<form>
-    <textarea id="demo" name="comments" cols="25" rows="5"></textarea>
-    <br />
-    <input type="button" onclick="myFunction()" value='Replace' />
-</form>
-
-<script type='text/javascript'>
-function myFunction() {
-    var test = document.getElementById('demo').value;
-    var url = "http://www.omdbapi.com/?t=" + test + "&y=&plot=short&r=json"; 
-    $.ajax({
-       type: "GET",
-        url: url,
-        dataType: "json",
-        success: processData,
-        error: function(){ alert("failed"); }
-    });
-
-}
-
-
-function processData(data){
-    var data = [[data.imdbRating, 0]];
-    
-    var options = {
+var IMDBOptions = {
         series: {
                    bars: {  show: true }
                },
@@ -86,19 +155,282 @@ function processData(data){
          }
   
     };
- 
-    $.plot($("#flotcontainer"), 
+
+
+    var NetflixOptions = {
+        series: {
+                   bars: {  show: true }
+               },
+         bars: {
+                align: "center",
+                barWidth: 0.5,
+                horizontal: true,
+                fillColor: { colors: [{ opacity: 0.5 }, { opacity: 1}] },
+                lineWidth: 1
+            },
+         xaxis: {
+                axisLabel: "IMDB Rating",
+                max: 5
+         },
+         yaxis: {
+                ticks: 0
+         }
+  
+    };
+
+var TomatoesOptions = {
+series: {
+	   bars: {  show: true }
+       },
+ bars: {
+	align: "center",
+	barWidth: 0.5,
+	horizontal: true,
+	fillColor: { colors: [{ opacity: 0.5 }, { opacity: 1}] },
+	lineWidth: 1
+    },
+ xaxis: {
+	axisLabel: "Tomato User Rating",
+	max: 5
+ },
+ yaxis: {
+	ticks: 0
+ }
+
+};
+
+
+var PhilOptions = {
+series: {
+	   bars: {  show: true }
+       },
+ bars: {
+	align: "center",
+	barWidth: 0.5,
+	horizontal: true,
+	fillColor: { colors: [{ opacity: 0.5 }, { opacity: 1}] },
+	lineWidth: 1
+    },
+ xaxis: {
+	axisLabel: "Phil's Rating",
+	max: 100
+ },
+ yaxis: {
+	ticks: 0
+ }
+
+};
+
+
+
+var emptyData = [[]];
+
+var IMDBRating = 0;
+var IMDBVotes = 0
+var NetflixRating = 0;
+var NetflixVotes = 0;
+var TomatoesRating = 0;
+var TomatoesVotes = 0;
+
+$(document).ready(function(){   
+    resetRatings();
+    plotEmptyIMDB();
+    plotEmptyNetflix(); 
+    plotEmptyTomatoes();
+    plotEmptyPhil();
+});
+
+
+function resetRatings(){
+    IMDBRating = 0;
+    IMDBVotes = 0
+    NetflixRating = 0;
+    NetflixVotes = 0;
+    TomatoesRating = 0;
+    TomatoesVotes = 0;
+
+}
+
+
+function plotEmptyIMDB(){
+    $.plot($("#IMDBcontainer"), 
+                [
+                    {
+                    data:emptyData
+                    }
+                ],
+                IMDBOptions);
+}
+
+function plotEmptyNetflix(){
+    $.plot($("#Netflixcontainer"), 
+                [
+                    {
+                    data:emptyData
+                    }
+                ],
+                NetflixOptions);
+}
+
+function plotEmptyTomatoes(){
+    $.plot($("#Tomatoescontainer"), 
+                [
+                    {
+                    data:emptyData
+                    }
+                ],
+                TomatoesOptions);
+}
+
+function plotEmptyPhil(){
+    $.plot($("#Philcontainer"), 
+                [
+                    {
+                    data:emptyData
+                    }
+                ],
+                PhilOptions);
+
+}
+
+
+function myFunction() {
+    var title = document.getElementById('title').value;
+    var imdb = "http://www.omdbapi.com/?t=" + title + "&y=&plot=short&r=json"; 
+    var netflix = "http://netflixroulette.net/api/api.php?title=" + title;
+    var tomatoes = "http://www.omdbapi.com/?t=" + title + "&y=&plot=short&r=json&tomatoes=true";
+    document.body.style.backgroundImage = "";
+    $.ajax({
+       type: "GET",
+        url: imdb,
+        dataType: "json",
+        success: processIMDBData,
+        error: plotEmptyIMDB,
+        async: false
+    });
+
+    $.ajax({
+       type: "GET",
+        url: netflix,
+        dataType: "json",
+        success: processNetflixData,
+        error: plotEmptyNetflix,
+        async: false
+    });
+    
+    $.ajax({
+       type: "GET",
+        url: tomatoes,
+        dataType: "json",
+        success: processTomatoesData,
+        error: plotEmptyTomatoes,
+        async: false
+    });
+
+    processPhilData();
+    resetRatings();
+}
+
+
+function processIMDBData(data){
+    var rating = [[data.imdbRating, 0]];
+    
+    $.plot($("#IMDBcontainer"), 
+                [
+                    {
+                    data:rating
+                    }
+                ],
+                IMDBOptions);
+    IMDBRating = parseFloat(data.imdbRating, 10);
+    IMDBVotes = parseFloat(data.imdbVotes, 10);
+
+    document.body.style.backgroundImage = "url('" + data.Poster + "')";
+
+
+    if (isNaN(IMDBRating) || isNaN(IMDBVotes)){
+        IMDBRating = 0;
+        IMDBVotes = 0;
+    }
+
+}
+
+function processNetflixData(data){
+    var rating = [[data.rating, 0]];
+    
+    $.plot($("#Netflixcontainer"), 
+                [
+                    {
+                    data:rating
+                    }
+                ],
+                NetflixOptions);
+
+
+}
+
+function processTomatoesData(data){
+    var rating = [[data.tomatoUserRating, 0]];
+    
+    $.plot($("#Tomatoescontainer"), 
+                [
+                    {
+                    data:rating
+                    }
+                ],
+                TomatoesOptions);
+
+    TomatoesRating = parseFloat(data.tomatoUserRating, 10);
+    TomatoesVotes = parseFloat(data.tomatoUserReviews, 10);
+
+    if (isNaN(TomatoesRating) || isNaN(TomatoesVotes)){
+        TomatoesRating = 0;
+        TomatoesVotes = 0;
+    }
+
+}
+
+
+function processPhilData(data){
+
+    var IMDBWeight = (IMDBRating*10)*IMDBVotes;
+    var TomatoesWeight = (TomatoesRating*20)*TomatoesVotes;
+    var NetflixWeight = (NetflixRating*20)*NetflixVotes;
+    var philScore = ((IMDBRating*10)*IMDBVotes + (TomatoesRating*20)*TomatoesVotes + (NetflixRating*20)*NetflixVotes)/(IMDBVotes + TomatoesVotes + NetflixVotes);
+    var data = [[philScore, 0]];
+     $.plot($("#Philcontainer"), 
                 [
                     {
                     data:data
                     }
                 ],
-                options);
-
-
+                PhilOptions);
 }
 
+
+
 </script>
-
-
-<div id="flotcontainer"></div>
+<!-- HTML -->
+<div class="center">
+    <div class="phil-scorer">PHIL'S SHOW RATER</div>
+  </div>
+          <div class="details">
+              <input id="title"/></br></br>
+              <input type="button" class="button" onclick="myFunction()" value='RATE!' />
+          </div>
+<div class="center2">
+IMDB Rating
+</div>
+<div id="IMDBcontainer"></div>
+<div class="center2">
+Rotten Tomatoes User Rating
+</div>
+<div id="Tomatoescontainer"></div>
+<div class="center2">
+Netflix Rating
+</div>
+<div id="Netflixcontainer"></div>
+<div class="center3">
+Phil Rating
+</div>
+<div id="Philcontainer"></div>
